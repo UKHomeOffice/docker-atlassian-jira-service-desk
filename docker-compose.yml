@@ -1,0 +1,9 @@
+jira:
+    build: ./
+    ports:
+      - "8080:8080"
+    links:
+        - postgres
+
+postgres:
+    image: postgres
