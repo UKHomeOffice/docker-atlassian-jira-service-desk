@@ -17,7 +17,7 @@ pipeline:
       - DOCKER_HOST=tcp://127.0.0.1:2375
     commands:
       - docker login -u="ukhomeofficedigital+upbot" -p=${DOCKER_PASSWORD} quay.io
-      - docker tag upbot quay.io/ukhomeofficedigital/docker-atlassian-jira-service-desk:${DRONE_COMMIT_SHA}
+      - docker tag docker-atlassian-jira-service-desk quay.io/ukhomeofficedigital/docker-atlassian-jira-service-desk:${DRONE_COMMIT_SHA}
       - docker push quay.io/ukhomeofficedigital/docker-atlassian-jira-service-desk:${DRONE_COMMIT_SHA}
     when:
       branch: master
