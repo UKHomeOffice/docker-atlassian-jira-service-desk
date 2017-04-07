@@ -34,7 +34,7 @@ RUN set -x \
     && echo -e                 "\njira.home=$JIRA_HOME" >> "${JIRA_INSTALL}/atlassian-jira/WEB-INF/classes/jira-application.properties" \
     && touch -d "@0"           "${JIRA_INSTALL}/conf/server.xml"
 
-USER jira:jira
+# USER jira:jira
 
 # Expose default HTTP connector port.
 EXPOSE 8080
