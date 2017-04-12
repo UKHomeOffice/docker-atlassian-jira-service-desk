@@ -34,6 +34,9 @@ RUN set -x \
     && echo -e                 "\njira.home=$JIRA_HOME" >> "${JIRA_INSTALL}/atlassian-jira/WEB-INF/classes/jira-application.properties" \
     && touch -d "@0"           "${JIRA_INSTALL}/conf/server.xml"
 
+# add a runtime arg to extend the timeout for plugin installs
+RUN sed -i 's/^JVM_SUPPORT_RECOMMENDED_ARGS=""/JVM_SUPPORT_RECOMMENDED_ARGS="-Datlassian.plugins.enable.wait=300"/' ${JIRA_INSTALL}/bin/setenv.sh
+
 # USER jira:jira
 
 # Expose default HTTP connector port.

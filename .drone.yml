@@ -24,14 +24,25 @@ pipeline:
       branch: master
       event: push
 
-  notify:
-    image: plugins/slack
-    webhook: https://hooks.slack.com/services/${SLACK_WEBHOOK}
-    channel: drone
-    username: drone
-    when:
-      status: [ success, failure ]
-      event: [ push, pull_request ]
+  # notify_slack:
+  #   image: plugins/slack:1.0
+  #   channel: drone
+  #   username: drone
+  #   template: >
+  #     build #{{build.Number}} finished with a {{build.Status}} status. {{build.Link}} - {{repo.Link}}
+  #   when:
+  #     branch: master
+  #     event: [pull_request, push]
+  #     status: [success, failure]
+
+  # notify:
+  #   image: plugins/slack
+  #   webhook: https://hooks.slack.com/services/${SLACK_WEBHOOK}
+  #   channel: drone
+  #   username: drone
+  #   when:
+  #     status: [ success, failure ]
+  #     event: [ push, pull_request ]
 
 services:
   dind:
