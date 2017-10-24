@@ -1,53 +1,37 @@
 pipeline:
 
   my-build:
-    privileged: true
-    image: docker:1.11
+    image: docker:17.09.0-ce
     environment:
-      - DOCKER_HOST=tcp://127.0.0.1:2375
+      - DOCKER_HOST=tcp://172.17.0.1:2375
     commands:
-      - docker build -t docker-atlassian-jira-service-desk .
-    when:
-      branch: master
-      event: push
+      - docker build -t docker-atlassian-jira-service-desk:$${DRONE_COMMIT_SHA} .
 
   image_to_quay:
-    image: docker:1.11
+    image: docker:17.09.0-ce
+    secrets:
+      - docker_password
     environment:
-      - DOCKER_HOST=tcp://127.0.0.1:2375
+      - DOCKER_HOST=tcp://172.17.0.1:2375
     commands:
-      - docker login -u="ukhomeofficedigital+upbot" -p=${DOCKER_PASSWORD} quay.io
-      - docker tag docker-atlassian-jira-service-desk quay.io/ukhomeofficedigital/docker-atlassian-jira-service-desk:${DRONE_COMMIT_SHA}
-      - docker tag docker-atlassian-jira-service-desk quay.io/ukhomeofficedigital/docker-atlassian-jira-service-desk:latest
-      - docker push quay.io/ukhomeofficedigital/docker-atlassian-jira-service-desk
+      - docker login -u="ukhomeofficedigital+upbot" -p=$${DOCKER_PASSWORD} quay.io
+      - docker tag docker-atlassian-jira-service-desk:$${DRONE_COMMIT_SHA} quay.io/ukhomeofficedigital/docker-atlassian-jira-service-desk:$${DRONE_COMMIT_SHA}
+      - docker tag docker-atlassian-jira-service-desk:$${DRONE_COMMIT_SHA} quay.io/ukhomeofficedigital/docker-atlassian-jira-service-desk:latest
+      - docker push quay.io/ukhomeofficedigital/docker-atlassian-jira-service-desk:$${DRONE_COMMIT_SHA}
+      - docker push quay.io/ukhomeofficedigital/docker-atlassian-jira-service-desk:latest
     when:
       branch: master
       event: push
 
-  # notify_slack:
-  #   image: plugins/slack:1.0
-  #   channel: drone
-  #   username: drone
-  #   template: >
-  #     build #{{build.Number}} finished with a {{build.Status}} status. {{build.Link}} - {{repo.Link}}
-  #   when:
-  #     branch: master
-  #     event: [pull_request, push]
-  #     status: [success, failure]
-
-  # notify:
-  #   image: plugins/slack
-  #   webhook: https://hooks.slack.com/services/${SLACK_WEBHOOK}
-  #   channel: drone
-  #   username: drone
-  #   when:
-  #     status: [ success, failure ]
-  #     event: [ push, pull_request ]
-
-services:
-  dind:
-    image: docker:1.11-dind
-    privileged: true
-    command:
-      - "-s"
-      - "overlay"
+  tagged_image_to_quay:
+    image: docker:17.09.0-ce
+    secrets:
+      - docker_password
+    environment:
+      - DOCKER_HOST=tcp://172.17.0.1:2375
+    commands:
+      - docker login -u="ukhomeofficedigital+upbot" -p=$${DOCKER_PASSWORD} quay.io
+      - docker tag docker-atlassian-jira-service-desk:$${DRONE_COMMIT_SHA} quay.io/ukhomeofficedigital/docker-atlassian-jira-service-desk:$${DRONE_TAG}
+      - docker push quay.io/ukhomeofficedigital/docker-atlassian-jira-service-desk:$${DRONE_TAG}
+    when:
+      event: tag
