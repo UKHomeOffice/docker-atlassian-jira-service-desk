@@ -37,7 +37,7 @@ RUN set -x \
 # add a runtime arg to extend the timeout for plugin installs
 RUN sed -i 's/^JVM_SUPPORT_RECOMMENDED_ARGS=""/JVM_SUPPORT_RECOMMENDED_ARGS="-Datlassian.plugins.enable.wait=300"/' ${JIRA_INSTALL}/bin/setenv.sh
 
-# USER jira:jira
+USER jira:jira
 
 # Expose default HTTP connector port.
 EXPOSE 8080
