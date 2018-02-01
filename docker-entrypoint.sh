@@ -1,9 +1,5 @@
 #!/bin/bash
 
-mkdir -p "/var/atlassian/jira/caches/indexes"
-chmod -R 700 "/var/atlassian/jira"
-chown -R root:root "/var/atlassian/jira"
-
 # check if the `server.xml` file has been changed since the creation of this
 # Docker image. If the file has been changed the entrypoint script will not
 # perform modifications to the configuration file.
