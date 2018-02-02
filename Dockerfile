@@ -12,16 +12,16 @@ RUN set -x \
     && apt-get install --quiet --yes --no-install-recommends xmlstarlet \
     && apt-get install --quiet --yes --no-install-recommends -t jessie-backports libtcnative-1 \
     && apt-get clean \
-    && useradd -U jira \
-    && chown -R jira:jira "/var" \
-    && chown -R jira:jira "/opt"
+    && useradd -U nginx \
+    && chown -R nginx:nginx "/var" \
+    && chown -R nginx:nginx "/opt"
     
-USER jira:jira
+USER nginx:nginx
 
 RUN mkdir -p                   "${JIRA_HOME}" \
     && mkdir -p                "${JIRA_HOME}/caches/indexes" \
     && chmod -R 700            "${JIRA_HOME}" \
-    && chown -R jira:jira      "${JIRA_HOME}" \
+    && chown -R nginx:nginx      "${JIRA_HOME}" \
     && mkdir -p                "${JIRA_INSTALL}/conf/Catalina" \
     && curl -Ls                "https://www.atlassian.com/software/jira/downloads/binary/atlassian-servicedesk-3.4.0.tar.gz" | tar -xz --directory "${JIRA_INSTALL}" --strip-components=1 --no-same-owner \
     && curl -Ls                "https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.38.tar.gz" | tar -xz --directory "${JIRA_INSTALL}/lib" --strip-components=1 --no-same-owner "mysql-connector-java-5.1.38/mysql-connector-java-5.1.38-bin.jar" \
@@ -31,10 +31,10 @@ RUN mkdir -p                   "${JIRA_HOME}" \
     && chmod -R 700            "${JIRA_INSTALL}/logs" \
     && chmod -R 700            "${JIRA_INSTALL}/temp" \
     && chmod -R 700            "${JIRA_INSTALL}/work" \
-    && chown -R jira:jira      "${JIRA_INSTALL}/conf" \
-    && chown -R jira:jira      "${JIRA_INSTALL}/logs" \
-    && chown -R jira:jira      "${JIRA_INSTALL}/temp" \
-    && chown -R jira:jira      "${JIRA_INSTALL}/work" \
+    && chown -R nginx:nginx      "${JIRA_INSTALL}/conf" \
+    && chown -R nginx:nginx      "${JIRA_INSTALL}/logs" \
+    && chown -R nginx:nginx      "${JIRA_INSTALL}/temp" \
+    && chown -R nginx:nginx      "${JIRA_INSTALL}/work" \
     && sed --in-place          "s/java version/openjdk version/g" "${JIRA_INSTALL}/bin/check-java.sh" \
     && echo -e                 "\njira.home=$JIRA_HOME" >> "${JIRA_INSTALL}/atlassian-jira/WEB-INF/classes/jira-application.properties" \
     && touch -d "@0"           "${JIRA_INSTALL}/conf/server.xml"
