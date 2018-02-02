@@ -16,7 +16,7 @@ RUN set -x \
     && chown -R jira:jira "/var" \
     && chown -R jira:jira "/opt"
     
-USER nginx:nginx
+USER jira:jira
 
 RUN mkdir -p                   "${JIRA_HOME}" \
     && mkdir -p                "${JIRA_HOME}/caches/indexes" \
