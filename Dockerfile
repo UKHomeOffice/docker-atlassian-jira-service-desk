@@ -13,7 +13,12 @@ RUN set -x \
     && apt-get install --quiet --yes --no-install-recommends -t jessie-backports libtcnative-1 \
     && apt-get clean \
     && useradd -U jira \
-    && mkdir -p                "${JIRA_HOME}" \
+    && chown -R jira:jira "/var" \
+    && chown -R jira:jira "/opt"
+    
+USER jira:jira
+
+RUN mkdir -p                   "${JIRA_HOME}" \
     && mkdir -p                "${JIRA_HOME}/caches/indexes" \
     && chmod -R 700            "${JIRA_HOME}" \
     && chown -R jira:jira      "${JIRA_HOME}" \
@@ -36,8 +41,6 @@ RUN set -x \
 
 # add a runtime arg to extend the timeout for plugin installs
 RUN sed -i 's/^JVM_SUPPORT_RECOMMENDED_ARGS=""/JVM_SUPPORT_RECOMMENDED_ARGS="-Datlassian.plugins.enable.wait=300"/' ${JIRA_INSTALL}/bin/setenv.sh
-
-USER jira:jira
 
 # Expose default HTTP connector port.
 EXPOSE 8080
