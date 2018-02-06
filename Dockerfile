@@ -22,6 +22,7 @@ RUN mkdir -p                   "${JIRA_HOME}" \
     && mkdir -p                "${JIRA_HOME}/caches/indexes" \
     && chmod -R 700            "${JIRA_HOME}" \
     && chown -R jira:jira      "${JIRA_HOME}" \
+    && chown -R jira:jira      "${JIRA_INSTALL}" \
     && mkdir -p                "${JIRA_INSTALL}/conf/Catalina" \
     && curl -Ls                "https://www.atlassian.com/software/jira/downloads/binary/atlassian-servicedesk-3.4.0.tar.gz" | tar -xz --directory "${JIRA_INSTALL}" --strip-components=1 --no-same-owner \
     && curl -Ls                "https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.38.tar.gz" | tar -xz --directory "${JIRA_INSTALL}/lib" --strip-components=1 --no-same-owner "mysql-connector-java-5.1.38/mysql-connector-java-5.1.38-bin.jar" \
