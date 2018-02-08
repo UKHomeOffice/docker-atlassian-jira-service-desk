@@ -58,5 +58,7 @@ WORKDIR /var/atlassian/jira
 COPY "docker-entrypoint.sh" "/"
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
+COPY "server.xml" "/opt/atlassian/jira/conf/server.xml"
+
 # Run Atlassian JIRA as a foreground process by default.
 CMD ["/opt/atlassian/jira/bin/catalina.sh", "run"]
