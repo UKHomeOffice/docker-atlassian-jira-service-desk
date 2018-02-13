@@ -16,6 +16,7 @@ RUN set -x \
     && chown -R jira:jira "/var" \
     && chown -R jira:jira "/opt"
     
+USER jira:jira
 
 RUN mkdir -p                   "${JIRA_HOME}" \
     && mkdir -p                "${JIRA_HOME}/caches/indexes" \
@@ -46,7 +47,6 @@ RUN sed -i 's/^JVM_SUPPORT_RECOMMENDED_ARGS=""/JVM_SUPPORT_RECOMMENDED_ARGS="-Da
 # Expose default HTTP connector port.
 EXPOSE 8080
 
-USER jira:jira
 
 # Set volume mount points for installation and home directory. Changes to the
 # home directory needs to be persisted as well as parts of the installation
